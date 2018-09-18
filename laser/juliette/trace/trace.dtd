@@ -1,0 +1,48 @@
+<!ELEMENT traces ( trace )* >
+
+<!ELEMENT trace ( property | state-change-event | observed-event )* >
+
+<!ELEMENT property EMPTY >
+<!ATTLIST property name CDATA #REQUIRED
+                   value CDATA #REQUIRED >
+                   
+<!ELEMENT observed-event EMPTY >
+<!ATTLIST observed-event agent CDATA #REQUIRED
+                         name CDATA #REQUIRED
+                         timestamp CDATA #REQUIRED
+                         ancestor IDREF #IMPLIED
+                         id ID #REQUIRED>
+
+<!ELEMENT state-change-event ( annotation | parameter | result | context | reactive-controller | cardinality-controller | parameter-controller  )* >
+<!ATTLIST state-change-event agent CDATA #REQUIRED
+							 name CDATA #REQUIRED
+                             state ( posted | starting | started | completing | completed | terminating | terminated | retracted | optedout ) #REQUIRED
+                             timestamp CDATA #REQUIRED
+                             ancestor IDREF #IMPLIED
+                             id ID #REQUIRED>
+                             
+<!ELEMENT annotation EMPTY >
+<!ATTLIST annotation kind CDATA #REQUIRED
+                     value CDATA #REQUIRED >
+
+<!ELEMENT parameter EMPTY >
+<!ATTLIST parameter name CDATA #REQUIRED
+                    value CDATA #REQUIRED >
+                    
+ <!ELEMENT result EMPTY >
+ <!ATTLIST result value CDATA #REQUIRED >
+                    
+<!ELEMENT context ( context? ) >
+<!ATTLIST context name CDATA #REQUIRED
+                  connection ( unknown | prerequisite | postrequisite | substep | reaction | handler ) #REQUIRED
+                  index CDATA #REQUIRED >
+
+<!ELEMENT reactive-controller EMPTY >
+<!ATTLIST reactive-controller trigger CDATA #REQUIRED >
+
+<!ELEMENT cardinality-controller EMPTY >
+<!ATTLIST cardinality-controller index CDATA #REQUIRED >
+
+<!ELEMENT parameter-controller EMPTY >
+<!ATTLIST parameter-controller name CDATA #REQUIRED
+                               index CDATA #REQUIRED >
