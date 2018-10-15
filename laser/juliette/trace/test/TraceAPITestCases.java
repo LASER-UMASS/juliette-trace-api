@@ -5,6 +5,10 @@ import laser.juliette.trace.Traces;
 import laser.juliette.trace.StateChangeEvent;
 import laser.juliette.trace.StateChangeEvent.State;
 import laser.juliette.trace.Event;
+import laser.juliette.trace.Context;
+import laser.juliette.trace.Context.*;
+import laser.juliette.trace.ParameterController;
+import laser.juliette.trace.Controller;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,6 +16,11 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.List;
+import java.util.ArrayList;
 
 public class TraceAPITestCases 
 {
@@ -130,7 +139,52 @@ public class TraceAPITestCases
     	Trace newTrace = new Trace();
     	newTrace.setProperty("Blood Type", "AB");
     	Assert.assertEquals(newTrace.getProperty("Blood Type"), "AB");
+    	newTrace = null;
     }
-    //To Do: test empty property.
     
+    @Test
+    public void testSetAndGetEmptyTraceProperty(){
+    	Trace newTrace = new Trace();
+    	Assert.assertNull(newTrace.getProperty(Integer.toString((int)Math.random() * 36)));
+    	newTrace = null;
+    }
+    
+    @Test
+    public void testStateChangeEventFullConstructor(){
+    	StateChangeEvent testChange;
+    	Event testParentEvent = null;
+    	StateChangeEvent testChangeParent = null;
+    	String testChangeName = "perform blood transfusion";
+    	State testChangeState = State.posted;
+    	Date testChangeDateTime = Calendar.getInstance().getTime();
+    	long testChangeTimestamp = testChangeDateTime.getTime();
+    	String testChangeAgent = "Nurse Duffy";
+    	Map<String, String> testChangeParameters = new Hashtable<String, String>(1);
+    	String BloodType = "O";
+    	testChangeParameters.put("BloodType", BloodType);
+    	Date testChangeBloodExperation = Calendar.getInstance().getTime();
+    	testChangeParameters.put("testChangeBloodExperation", testChangeBloodExperation.toString());
+    	List<String> testChangeResults = new ArrayList<String>();
+    	testChangeResults.add("Successfull");
+    	Context testChangeContext = new Context("Pre Proccedure Blood Transfusion", Connection.prerequisite, 1, null);
+    	Controller testChangeController = new ParameterController(testChangeParameters.get("BloodType"), 1);
+    	testChange = new StateChangeEvent(testChangeAgent, testChangeName, testChangeState, testChangeTimestamp, testChangeParent, testChangeParameters, testChangeResults, testChangeContext, testChangeController);
+    	Assert.assertNotNull("This event should exist!",testChange);
+    	Assert.assertNotNull("The agent name should have been entered",testChange.getAgentName());
+    	Assert.assertTrue("The name of the agent should match the name of the person performing the task", testChange.getAgentName().equals(testChangeAgent) && testChangeAgent.equals("Nurse Duffy") && testChange.getAgentName().equals("Nurse Duffy"));
+    	Assert.assertNotNull("The event has a name!",testChange.getEventName());
+    	Assert.assertTrue("The event's name should be: perform blood transfusion", testChangeName.equals("perform blood transfusion"));
+    	Assert.assertTrue("the event should have the right name put in, like: " + testChangeName, testChange.getEventName().equals(testChangeName));
+    	Assert.assertNotNull("In what state did you leave this event?",testChange.getState());
+    	Assert.assertNotNull("Time is important, Especially during surgical traces",testChange.getTimestamp());
+    	Assert.assertNull("testChange is the first event in the trace",testChange.getAncestor());
+    	Assert.assertNotNull("We set parrameters for this event right?",testChange.getParameters());
+    	Assert.assertNotNull("What were the end results?",testChange.getResults());
+    	Assert.assertNotNull("There should have been some context for why this event was created",testChange.getContext());
+    	Assert.assertNotNull("What controller was created?", testChange.getController());
+    }
+    
+    @Test
+    public void XMLIOReadTest(){
+    }
 } // end for TraceAPITestCases
