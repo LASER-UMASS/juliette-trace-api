@@ -52,6 +52,7 @@ public class StateChangeEvent extends Event {
      * @param context the instance context or null
      * @param controller the instance controller or null
      */
+    
     public StateChangeEvent(String agent, String step, State state, long timestamp, Event ancestor, Map<String, String> parameters, List<String> results, Context context, Controller controller) {
         super(agent, step, timestamp, ancestor);
         this.state = state;

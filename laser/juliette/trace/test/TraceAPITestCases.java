@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Hashtable;
-import java.util.Properties;
 import java.util.List;
 import java.util.ArrayList;
 
