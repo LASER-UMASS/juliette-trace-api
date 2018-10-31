@@ -1,6 +1,8 @@
 package cardiacsurgery.trace;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 
 import laser.juliette.trace.StateChangeEvent;
@@ -19,12 +21,17 @@ public class CardiacSurgeryTrace01 extends CardiacSurgeryTrace
 		
 		// Step 1: The root step STARTED
 		StateChangeEvent previousEvent = null;
-		long currentTimestamp = 0; //TODO: Parse "February 21, 2018 9:33:57 AM"
+		Calendar currentCalendar = Calendar.getInstance();
+		currentCalendar.set(2018, Calendar.FEBRUARY, 21, 9, 33, 57);
+		Date currentDate = currentCalendar.getTime();
+		long currentTimestamp = currentDate.getTime(); //TODO: Parse "February 21, 2018 9:33:57 AM"
+		//Date is parsed in milliseconds from January 1st 1970 00:00:00GMT, or exact Midnight of January 1st 1970 in the town of Greenwich
+		
 		StateChangeEvent currentEvent = this.createStateChangeEvent(AUTO_AGENT_NAME, "performIsolatedCABG", State.started, currentTimestamp, previousEvent);
 		
 		// Step 2:
 		previousEvent = currentEvent;
-		currentTimestamp = 0; // See above
+		currentTimestamp += 1000000; // See above
 		currentEvent = this.createStateChangeEvent(AUTO_AGENT_NAME, "perform pre-incision timeout", State.started, currentTimestamp, previousEvent);
 		
 		// Step 3:
