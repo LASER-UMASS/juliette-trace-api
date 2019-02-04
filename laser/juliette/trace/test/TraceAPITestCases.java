@@ -45,6 +45,12 @@ public class TraceAPITestCases
     	Assert.assertEquals(childEventTimestamp, childEvent.getTimestamp());
     }
     
+    //To Do: testNewStateChangeEvent using the other constructor with input parameters
+    
+    //To Do: testNewStateChangeEvent using the other constructor with completed and output parameters (using results)
+    
+    //To Do: testNewStateChangeEvent using the other constructor with terminated and exceptions thrown (using results)
+    
     @Test
     public void testTracesAddition(){
     	Traces newTraces = new Traces();
@@ -131,6 +137,11 @@ public class TraceAPITestCases
     	newTrace.setProperty("Blood Type", "AB");
     	Assert.assertEquals(newTrace.getProperty("Blood Type"), "AB");
     }
-    //To Do: test empty property.
+    
+    //To Do: testGetTraceProperty when that property does not exist
+    
+    //To Do: testEventGetAnnotation(s) when no annotations exist
+    
+    //To Do: testEventAddAnnotation then testEventGetAnnotation(s) when that annotation exists
     
 } // end for TraceAPITestCases
