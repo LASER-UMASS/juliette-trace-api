@@ -1,20 +1,30 @@
 package laser.juliette.trace.test;
 
-import laser.juliette.trace.Trace;
-import laser.juliette.trace.Traces;
-import laser.juliette.trace.StateChangeEvent;
-import laser.juliette.trace.StateChangeEvent.State;
-import laser.juliette.trace.Event;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.HashMap;
+
+import org.junit.Test;
+import org.junit.Assert;
+
+import laser.juliette.trace.Event;
+import laser.juliette.trace.Event.Annotation;
+import laser.juliette.trace.StateChangeEvent;
+import laser.juliette.trace.StateChangeEvent.State;
+import laser.juliette.trace.Trace;
+import laser.juliette.trace.Traces;
 
 public class TraceAPITestCases 
 {
+	//Method was Written to autogenerate A timestamp upon calling.  I was lazy
+	private long getTimeStamp(){
+		Date currentDate = Calendar.getInstance().getTime();
+		long currentTimestamp = currentDate.getTime();
+		return currentTimestamp;
+	}
+	
     @Test
     public void testNewTracesNonNullAndEmpty() {
     	Traces newTraces = new Traces();
@@ -43,6 +53,23 @@ public class TraceAPITestCases
     	Assert.assertEquals(childEventName, childEvent.getEventName());
     	Assert.assertEquals(childEventState, childEvent.getState());
     	Assert.assertEquals(childEventTimestamp, childEvent.getTimestamp());
+    }
+    
+    @Test
+    public void testNewStateChangeEventFullConstructor(){
+    	long childEventTimestamp = getTimeStamp();
+    	Event parentEvent = null;
+    	String childEventName = "perform blood transfusion";
+    	HashMap<String,String> childParameters = new HashMap<String,String>();
+    	Assert.assertNotNull(childParameters);
+    	Assert.assertTrue(childParameters.isEmpty());
+    	childParameters.put("Patient","Name");
+    	
+    	Assert.assertTrue(childParameters.get("Patient").equals("Name"));
+    	
+    	StateChangeEvent childEvent = new StateChangeEvent(StateChangeEvent.UNKNOWN_AGENT,childEventName,State.posted,childEventTimestamp,parentEvent,childParameters,null,null,null);
+    	Assert.assertNotNull(childEvent);
+    	Assert.assertEquals(childEvent.getParameters().get("Patient"),childParameters.get("Patient"));
     }
     
     //To Do: testNewStateChangeEvent using the other constructor with input parameters
@@ -134,6 +161,7 @@ public class TraceAPITestCases
     @Test
     public void testSetAndGetTraceProperty(){
     	Trace newTrace = new Trace();
+    	Assert.assertEquals(newTrace.getProperty("Blood Type"),null);
     	newTrace.setProperty("Blood Type", "AB");
     	Assert.assertEquals(newTrace.getProperty("Blood Type"), "AB");
     }
@@ -141,7 +169,31 @@ public class TraceAPITestCases
     //To Do: testGetTraceProperty when that property does not exist
     
     //To Do: testEventGetAnnotation(s) when no annotations exist
+    @Test
+    public void testEventGetEmptyAnnotations(){
+    	Event plainEvent = new StateChangeEvent(null,State.posted,getTimeStamp(),null); //This event has no Annotations
+    	List<Annotation> emptyAnnotations = plainEvent.getAnnotations();
+    	Assert.assertNotNull("This List Exists", emptyAnnotations);
+    	
+    	//This list should be completly empty
+    	Assert.assertTrue(emptyAnnotations.isEmpty());
+    	Assert.assertEquals(emptyAnnotations.size(), 0);
+    	
+    	Annotation nonExistent = plainEvent.getAnnotation("string");
+    	Assert.assertNull(nonExistent);
+    }
     
     //To Do: testEventAddAnnotation then testEventGetAnnotation(s) when that annotation exists
+    @Test
+    public void TestEventAddAndGetAnnotation(){
+    	//As this event is for testing, few of the requirements must be filled
+    	Event annotatedEvent = new StateChangeEvent(null,null,getTimeStamp(),null);
+    	
+    	annotatedEvent.addAnnotation("ID", "KC1AOJ");//I don't really know what the annotations are for.  Sorry
+    	List<Annotation> AnnotationList = annotatedEvent.getAnnotations();
+    	Assert.assertNotNull(AnnotationList);
+    	Assert.assertFalse(AnnotationList.isEmpty());
+    	Assert.assertEquals(AnnotationList.size(),1);
+    }
     
 } // end for TraceAPITestCases
