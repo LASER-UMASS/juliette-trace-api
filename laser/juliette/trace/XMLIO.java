@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, University of Massachusetts Amherst
+ * Copyright (c) 2009, 2019, University of Massachusetts Amherst
  * All Rights Reserved.
  */
 package laser.juliette.trace;
@@ -73,7 +73,7 @@ public class XMLIO {
 			Element propnode = doc.createElement(XMLSupport.PROPERTY);
 			propnode.setAttribute(XMLSupport.NAME, name);
 			propnode.setAttribute(XMLSupport.VALUE, trace.getProperty(name));
-			root.appendChild(tracenode);
+			tracenode.appendChild(propnode);
 		}
 		
 		for (Event event: trace) {
