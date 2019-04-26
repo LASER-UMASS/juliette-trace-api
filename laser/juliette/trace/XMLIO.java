@@ -153,17 +153,25 @@ public class XMLIO {
 				
 				controllernode.setAttribute(XMLSupport.TRIGGER, ((ReactiveController) controller).getTrigger());
 				
-			} else if (controller instanceof CardinalityController) {
-				Element controllernode = doc.createElement(XMLSupport.CARDINALITY_CONTROLLER);
-				eventnode.appendChild(controllernode);
-				
-				controllernode.setAttribute(XMLSupport.INDEX, Integer.toString(((CardinalityController) controller).getIndex()));
 			} else if (controller instanceof ParameterController) {
 				Element controllernode = doc.createElement(XMLSupport.PARAMETER_CONTROLLER);
 				eventnode.appendChild(controllernode);
 				
 				controllernode.setAttribute(XMLSupport.NAME, ((ParameterController) controller).getParameter());
 				controllernode.setAttribute(XMLSupport.INDEX, Integer.toString(((ParameterController) controller).getIndex()));
+			} else if (controller instanceof PredicateController) {
+				Element controllernode = doc.createElement(XMLSupport.PREDICATE_CONTROLLER);
+				eventnode.appendChild(controllernode);
+				
+				controllernode.setAttribute(XMLSupport.PREDICATE, ((PredicateController) controller).getPredicate());
+				controllernode.setAttribute(XMLSupport.INDEX, Integer.toString(((PredicateController) controller).getIndex()));
+			} else if (controller instanceof CardinalityController) {
+				//NOTE) Since the ParameterController (PredicateController) is a
+				//      CardinalityController, this case needs to be after that case.
+				Element controllernode = doc.createElement(XMLSupport.CARDINALITY_CONTROLLER);
+				eventnode.appendChild(controllernode);
+				
+				controllernode.setAttribute(XMLSupport.INDEX, Integer.toString(((CardinalityController) controller).getIndex()));
 			} else {
 				throw new RuntimeException("Unexpected controller kind " + controller);
 			}

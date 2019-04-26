@@ -46,6 +46,8 @@ class XMLSupport {
     static final String TRIGGER = "trigger";
     static final String CARDINALITY_CONTROLLER = "cardinality-controller";
     static final String PARAMETER_CONTROLLER = "parameter-controller";
+    static final String PREDICATE_CONTROLLER = "predicate-controller";
+    static final String PREDICATE = "predicate";
     
     InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         if (publicId.equals(XMLSupport.PUBLIC_ID)) {

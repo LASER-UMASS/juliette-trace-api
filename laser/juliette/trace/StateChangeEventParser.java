@@ -47,6 +47,8 @@ class StateChangeEventParser extends Parser {
 			stack.push(new CardinalityControllerParser(stack, attrs, controller));
 		} else if (tag.equals(XMLSupport.PARAMETER_CONTROLLER)) {
 			stack.push(new ParameterControllerParser(stack, attrs, controller));
+		} else if (tag.equals(XMLSupport.PREDICATE_CONTROLLER)) {
+			stack.push(new PredicateControllerParser(stack, attrs, controller));
 		} else {
 			throw new SAXParseException("Unexpected tag " + tag, null);
 		}
