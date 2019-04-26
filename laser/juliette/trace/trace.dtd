@@ -13,7 +13,7 @@
                          ancestor IDREF #IMPLIED
                          id ID #REQUIRED>
 
-<!ELEMENT state-change-event ( annotation | parameter | result | context | reactive-controller | cardinality-controller | parameter-controller  )* >
+<!ELEMENT state-change-event ( annotation | parameter | result | context | reactive-controller | cardinality-controller | parameter-controller | predicate-controller  )* >
 <!ATTLIST state-change-event agent CDATA #REQUIRED
 							 name CDATA #REQUIRED
                              state ( posted | starting | started | completing | completed | terminating | terminated | retracted | optedout ) #REQUIRED
@@ -45,4 +45,8 @@
 
 <!ELEMENT parameter-controller EMPTY >
 <!ATTLIST parameter-controller name CDATA #REQUIRED
+                               index CDATA #REQUIRED >
+                               
+<!ELEMENT predicate-controller EMPTY >
+<!ATTLIST predicate-controller predicate CDATA #REQUIRED 
                                index CDATA #REQUIRED >
