@@ -158,17 +158,21 @@ public class TraceAPITestCases
     	newTraceIterator = null;
     }
     
+    public void testGetTraceProperty() {
+    	// Attempt to get a trace property that doesn't exist
+    	Trace newTrace = new Trace();
+    	Assert.assertEquals(newTrace.getProperty("Blood Type"),null);    
+    }
+    
     @Test
     public void testSetAndGetTraceProperty(){
+    	// Attempt to get a trace property that does exist
     	Trace newTrace = new Trace();
     	Assert.assertEquals(newTrace.getProperty("Blood Type"),null);
     	newTrace.setProperty("Blood Type", "AB");
     	Assert.assertEquals(newTrace.getProperty("Blood Type"), "AB");
     }
     
-    //To Do: testGetTraceProperty when that property does not exist
-    
-    //To Do: testEventGetAnnotation(s) when no annotations exist
     @Test
     public void testEventGetEmptyAnnotations(){
     	Event plainEvent = new StateChangeEvent(null,State.posted,getTimeStamp(),null); //This event has no Annotations
@@ -183,13 +187,12 @@ public class TraceAPITestCases
     	Assert.assertNull(nonExistent);
     }
     
-    //To Do: testEventAddAnnotation then testEventGetAnnotation(s) when that annotation exists
     @Test
     public void TestEventAddAndGetAnnotation(){
     	//As this event is for testing, few of the requirements must be filled
     	Event annotatedEvent = new StateChangeEvent(null,null,getTimeStamp(),null);
     	
-    	annotatedEvent.addAnnotation("ID", "KC1AOJ");//I don't really know what the annotations are for.  Sorry
+    	annotatedEvent.addAnnotation("ID", "KC1AOJ");
     	List<Annotation> AnnotationList = annotatedEvent.getAnnotations();
     	Assert.assertNotNull(AnnotationList);
     	Assert.assertFalse(AnnotationList.isEmpty());
