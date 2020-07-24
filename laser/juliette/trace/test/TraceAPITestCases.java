@@ -79,7 +79,7 @@ public class TraceAPITestCases
     //To Do: testNewStateChangeEvent using the other constructor with terminated and exceptions thrown (using results)
     
     @Test
-    public void testTracesAddition(){
+    public void testTracesAdd(){
     	Traces newTraces = new Traces();
     	Trace newTrace = new Trace();
     	newTraces.add(newTrace);
@@ -97,7 +97,7 @@ public class TraceAPITestCases
     }
     
     @Test
-    public void testTracesRemoval(){
+    public void testTracesRemove(){
     	Traces newTraces = new Traces();
     	Trace newTrace = new Trace();
     	newTraces.add(newTrace);
@@ -107,25 +107,16 @@ public class TraceAPITestCases
     }
     
     @Test
-    public void testTraceSingleAddition(){
+    public void testTraceGetEventDoesNotExist() {
     	Trace newTrace = new Trace();
-    	Event testEvent;
-    	Event testParentEvent = null;
-    	String testEventName = "perform mock blood transfusion";
-    	State testEventState = State.posted;
-    	Date testEventDateTime = Calendar.getInstance().getTime();
-    	long testEventTimestamp = testEventDateTime.getTime();
-    	testEvent = new StateChangeEvent(testEventName, testEventState, testEventTimestamp, testParentEvent);
-    	newTrace.add(testEvent);
-    	Iterator<Event> newTraceIterator = newTrace.iterator();
-    	Assert.assertNotNull(newTraceIterator);
-    	Assert.assertTrue(newTraceIterator.hasNext());
-    	Assert.assertTrue(newTraceIterator.next().equals(testEvent));
-    	Assert.assertFalse(newTraceIterator.hasNext());
+    	int ID = 0;
+    	Assert.assertEquals(0, newTrace.length());
+    	Event foundEvent = newTrace.get(ID);
+    	Assert.assertNull(foundEvent);
     }
     
     @Test
-    public void testTraceMultipleAddition(){
+    public void testTraceGetEventDoesExist() {
     	Trace newTrace = new Trace();
     	Event testEvent;
     	Event testParentEvent = null;
@@ -134,69 +125,91 @@ public class TraceAPITestCases
     	Date testEventDateTime = Calendar.getInstance().getTime();
     	long testEventTimestamp = testEventDateTime.getTime();
     	testEvent = new StateChangeEvent(testEventName, testEventState, testEventTimestamp, testParentEvent);
-    	Assert.assertFalse(newTrace.iterator().hasNext());
     	newTrace.add(testEvent);
-    	Assert.assertTrue(newTrace.iterator().hasNext());
-    	Assert.assertTrue(newTrace.iterator().next().equals(testEvent));
+    	Assert.assertEquals(testEvent, newTrace.get(testEvent.getID()));
+    }
+    
+    @Test
+    public void testTraceAddOneEvent(){
+    	Trace newTrace = new Trace();
+    	Event testEvent;
+    	Event testParentEvent = null;
+    	String testEventName = "perform mock blood transfusion";
+    	State testEventState = State.posted;
+    	Date testEventDateTime = Calendar.getInstance().getTime();
+    	long testEventTimestamp = testEventDateTime.getTime();
+    	testEvent = new StateChangeEvent(testEventName, testEventState, testEventTimestamp, testParentEvent);
+    	newTrace.add(testEvent);
+    	Assert.assertEquals(1, newTrace.length());
+    	Event testEventPrime = newTrace.iterator().next();
+    	Assert.assertEquals(testEvent, testEventPrime);
+    }
+    
+    @Test
+    public void testTraceAddTwoEvents(){
+    	Trace newTrace = new Trace();
+    	Event testEvent;
+    	Event testParentEvent = null;
+    	String testEventName = "perform mock blood transfusion";
+    	State testEventState = State.posted;
+    	Date testEventDateTime = Calendar.getInstance().getTime();
+    	long testEventTimestamp = testEventDateTime.getTime();
+    	testEvent = new StateChangeEvent(testEventName, testEventState, testEventTimestamp, testParentEvent);
+    	newTrace.add(testEvent);
+    	Assert.assertEquals(1, newTrace.length());
+    	Iterator<Event> newEventsItr = newTrace.iterator();
+    	Assert.assertEquals(testEvent, newEventsItr.next());
+    	
     	Event testEvent2;
     	Date testEvent2DateTime = Calendar.getInstance().getTime();
     	long testEvent2Timestamp = testEvent2DateTime.getTime();
     	testEvent2 = new StateChangeEvent("perform actual blood transfusion", State.posted, testEvent2Timestamp, testEvent);
     	newTrace.add(testEvent2);
-    	Iterator<Event> newTraceIterator = newTrace.iterator();
-    	Assert.assertTrue(newTraceIterator.hasNext());
-    	Event iterator1 = newTraceIterator.next();
-    	Assert.assertTrue(iterator1.equals(testEvent));
-    	Assert.assertFalse(iterator1.equals(testEvent2));
-    	Assert.assertTrue(newTraceIterator.hasNext());
-    	iterator1 = null;
-    	Event iterator2 = newTraceIterator.next();
-    	Assert.assertTrue(iterator2.equals(testEvent2));
-    	Assert.assertFalse(iterator2.equals(testEvent));
-    	iterator2 = null;
-    	Assert.assertFalse(newTraceIterator.hasNext());
-    	newTraceIterator = null;
+    	Assert.assertEquals(2, newTrace.length());
+    	Iterator<Event> newEventsItr2 = newTrace.iterator();
+    	Assert.assertEquals(testEvent, newEventsItr2.next());
+    	Assert.assertEquals(testEvent2, newEventsItr2.next());
     }
     
-    public void testGetTraceProperty() {
+    public void testTraceGetPropertyDoesNotExist() {
     	// Attempt to get a trace property that doesn't exist
     	Trace newTrace = new Trace();
-    	Assert.assertEquals(newTrace.getProperty("Blood Type"),null);    
+    	Assert.assertEquals(null, newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));    
     }
     
     @Test
-    public void testSetAndGetTraceProperty(){
+    public void testTraceGetPropertyDoesExist(){
     	// Attempt to get a trace property that does exist
     	Trace newTrace = new Trace();
-    	Assert.assertEquals(newTrace.getProperty("Blood Type"),null);
-    	newTrace.setProperty("Blood Type", "AB");
-    	Assert.assertEquals(newTrace.getProperty("Blood Type"), "AB");
+    	String newProcessName = "perform mock blood transfusion";
+    	Assert.assertEquals(newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME), null);
+    	newTrace.setProperty(Trace.PROCESS_NAME_PROPERTY_NAME, newProcessName);
+    	Assert.assertEquals(newProcessName, newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));
     }
     
     @Test
-    public void testEventGetEmptyAnnotations(){
+    public void testEventGetAnnotationDoesNotExist(){
     	Event plainEvent = new StateChangeEvent(null,State.posted,getTimeStamp(),null); //This event has no Annotations
     	List<Annotation> emptyAnnotations = plainEvent.getAnnotations();
-    	Assert.assertNotNull("This List Exists", emptyAnnotations);
+    	Assert.assertNotNull(Event.ISLEAF_ANNOTATION_NAME, emptyAnnotations);
     	
-    	//This list should be completly empty
-    	Assert.assertTrue(emptyAnnotations.isEmpty());
+    	//This list should be completely empty
     	Assert.assertEquals(emptyAnnotations.size(), 0);
-    	
-    	Annotation nonExistent = plainEvent.getAnnotation("string");
-    	Assert.assertNull(nonExistent);
     }
     
     @Test
-    public void TestEventAddAndGetAnnotation(){
+    public void TestEventGetAnnotationDoesExist(){
     	//As this event is for testing, few of the requirements must be filled
     	Event annotatedEvent = new StateChangeEvent(null,null,getTimeStamp(),null);
+    	String isLeafAnnotationValue = "true";
     	
-    	annotatedEvent.addAnnotation("ID", "KC1AOJ");
-    	List<Annotation> AnnotationList = annotatedEvent.getAnnotations();
-    	Assert.assertNotNull(AnnotationList);
-    	Assert.assertFalse(AnnotationList.isEmpty());
-    	Assert.assertEquals(AnnotationList.size(),1);
+    	annotatedEvent.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, isLeafAnnotationValue);
+    	List<Annotation> annotationList = annotatedEvent.getAnnotations();
+    	Assert.assertNotNull(annotationList);
+    	Assert.assertEquals(annotationList.size(), 1);
+    	Annotation annotation = annotationList.get(0);
+    	Assert.assertEquals(Event.ISLEAF_ANNOTATION_NAME, annotation.getKind());
+    	Assert.assertEquals(isLeafAnnotationValue, annotation.getValue());
     }
     
 } // end for TraceAPITestCases
