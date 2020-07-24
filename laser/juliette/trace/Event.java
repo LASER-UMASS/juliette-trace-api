@@ -64,7 +64,7 @@ public abstract class Event implements Serializable {
     	return ancestor;
     }
     
-    int getID() {
+    public int getID() {
     	if (id==0) {
     		id = nextID++;
     	}
@@ -136,4 +136,6 @@ public abstract class Event implements Serializable {
     private int id;
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private static int nextID = 1;
+    
+	public static final String ISLEAF_ANNOTATION_NAME = "isLeaf";
 }
