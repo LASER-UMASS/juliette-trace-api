@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, University of Massachusetts Amherst
+ * Copyright (c) 2006, 2020, University of Massachusetts Amherst
  * All Rights Reserved.
  */
 package laser.juliette.trace;
@@ -74,6 +74,31 @@ public class Trace implements Iterable<Event>, Serializable {
         trace.add(event);
     }
     
+    public Event get(int ID) {
+    	if (this.length() > 0) {
+    		// The array has 0-based indices but
+    		// the ID has 1-based indices.
+    		Event foundEvent = this.trace.get(ID - 1);
+    		if (foundEvent.getID() == ID) {
+    			return foundEvent;
+    		}
+    	}
+    	
+    	for (Iterator<Event> eventsItr = this.iterator(); eventsItr.hasNext(); ) {
+    		Event currentEvent = eventsItr.next();
+    		
+    		if (currentEvent.getID() == ID) {
+    			return currentEvent;
+    		}
+    	} // end for eventsItr
+    	
+    	return null;
+    }
+    
+    public int length() {
+    	return this.trace.size();
+    }
+    
     /**
      * Set a trace property value.
      * @param name the property name
@@ -103,4 +128,13 @@ public class Trace implements Iterable<Event>, Serializable {
 
     private List<Event> trace = new ArrayList<Event>(); // TODO replace with SortedSet
     private Map<String, String> properties = new HashMap<String, String>();
+    
+	public static final String PROCESS_NAME_PROPERTY_NAME = "processName";
+	public static final String CREATED_TIMESTAMP_PROPERTY_NAME = "createdTimestamp";
+	public static final String UPDATED_TIMESTAMP_PROPERTY_NAME = "updatedTimestamp";	
+	
+	/**
+	 * The Traces, Trace, or Event may have user comments
+	 */
+	public static final String USER_COMMENTS_ANNOTATION_NAME = "userComments";
 }
