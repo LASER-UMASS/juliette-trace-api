@@ -171,6 +171,7 @@ public class TraceAPITestCases
     	Assert.assertEquals(testEvent2, newEventsItr2.next());
     }
     
+    @Test
     public void testTraceGetPropertyDoesNotExist() {
     	// Attempt to get a trace property that doesn't exist
     	Trace newTrace = new Trace();
