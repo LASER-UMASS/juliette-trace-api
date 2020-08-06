@@ -28,15 +28,15 @@ public class TraceAPITestCases
     @Test
     public void testNewTracesNonNullAndEmpty() {
     	Traces newTraces = new Traces();
-    	Assert.assertNotNull("The newTraces should be non-null.", newTraces);
-    	Assert.assertTrue("The new Traces should be empty.", newTraces.isEmpty());
+    	Assert.assertNotNull(newTraces);
+    	Assert.assertTrue(newTraces.isEmpty());
     }
     
     @Test
     public void testNewTraceNonNullAndEmpty() {
     	Trace newTrace = new Trace();
-    	Assert.assertNotNull("The new Trace should be non-null", newTrace); 	
-    	Assert.assertFalse("The new Trace should be empty.", newTrace.iterator().hasNext());
+    	Assert.assertNotNull(newTrace); 	
+    	Assert.assertFalse(newTrace.iterator().hasNext());
     }
     
     @Test 
@@ -83,7 +83,7 @@ public class TraceAPITestCases
     	Traces newTraces = new Traces();
     	Trace newTrace = new Trace();
     	newTraces.add(newTrace);
-    	Assert.assertEquals(newTraces.size(), 1);
+    	Assert.assertEquals(1, newTraces.size());
     	Assert.assertTrue(newTraces.get(0).equals(newTrace));
     	Assert.assertTrue(newTraces.contains(newTrace));
     	Assert.assertNotNull(newTraces.get(0));
@@ -91,7 +91,7 @@ public class TraceAPITestCases
     	newTraces.add(secondTrace);
     	Assert.assertTrue(newTraces.contains(newTrace));
     	Assert.assertTrue(newTraces.contains(secondTrace));
-    	Assert.assertEquals(newTraces.size(), 2);
+    	Assert.assertEquals(2, newTraces.size());
     	Assert.assertTrue(newTraces.get(1).equals(secondTrace));
     	Assert.assertFalse(newTraces.get(1).equals(newTrace));
     }
@@ -102,7 +102,7 @@ public class TraceAPITestCases
     	Trace newTrace = new Trace();
     	newTraces.add(newTrace);
     	newTraces.remove(0);
-    	Assert.assertEquals(newTraces.size(), 0);
+    	Assert.assertEquals(0, newTraces.size());
     	Assert.assertFalse(newTraces.contains(newTrace));
     }
     
@@ -174,7 +174,8 @@ public class TraceAPITestCases
     public void testTraceGetPropertyDoesNotExist() {
     	// Attempt to get a trace property that doesn't exist
     	Trace newTrace = new Trace();
-    	Assert.assertEquals(null, newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));    
+    	Assert.assertNull(newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));    
+    	Assert.assertEquals(0, newTrace.getPropertyNames().size());
     }
     
     @Test
@@ -182,32 +183,53 @@ public class TraceAPITestCases
     	// Attempt to get a trace property that does exist
     	Trace newTrace = new Trace();
     	String newProcessName = "perform mock blood transfusion";
-    	Assert.assertEquals(newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME), null);
+    	Assert.assertNull(newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));
     	newTrace.setProperty(Trace.PROCESS_NAME_PROPERTY_NAME, newProcessName);
     	Assert.assertEquals(newProcessName, newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));
+    	Assert.assertEquals(1, newTrace.getPropertyNames().size());
+    	Assert.assertEquals(Trace.PROCESS_NAME_PROPERTY_NAME, newTrace.getPropertyNames().iterator().next());
     }
     
     @Test
-    public void testEventGetAnnotationDoesNotExist(){
+    public void testEventGetAnnotationNull() {
     	Event plainEvent = new StateChangeEvent(null,State.posted,getTimeStamp(),null); //This event has no Annotations
-    	List<Annotation> emptyAnnotations = plainEvent.getAnnotations();
-    	Assert.assertNotNull(Event.ISLEAF_ANNOTATION_NAME, emptyAnnotations);
+    	Annotation nullAnnotation = plainEvent.getAnnotation(Event.ISLEAF_ANNOTATION_NAME);
+    	Assert.assertNull(nullAnnotation);
+    }    
+    
+    @Test
+    public void testEventGetAnnotationNonNull() {
+    	Event annotatedEvent = new StateChangeEvent(null,null,getTimeStamp(),null);
+    	String isLeafAnnotationValue = "true";
     	
-    	//This list should be completely empty
-    	Assert.assertEquals(emptyAnnotations.size(), 0);
+    	annotatedEvent.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, isLeafAnnotationValue);
+    	Annotation nonNullAnnotation = annotatedEvent.getAnnotation(Event.ISLEAF_ANNOTATION_NAME);
+    	Assert.assertNotNull(nonNullAnnotation);
+    	Assert.assertEquals(Event.ISLEAF_ANNOTATION_NAME, nonNullAnnotation.getKind());
+    	Assert.assertEquals(isLeafAnnotationValue, nonNullAnnotation.getValue());
     }
     
     @Test
-    public void TestEventGetAnnotationDoesExist(){
+    public void testEventGetAnnotationsEmpty(){
+    	Event plainEvent = new StateChangeEvent(null,State.posted,getTimeStamp(),null); //This event has no Annotations
+    	List<Annotation> emptyAnnotationList = plainEvent.getAnnotations();
+    		
+    	//This list should be completely empty
+    	Assert.assertNotNull(emptyAnnotationList);
+    	Assert.assertEquals(0, emptyAnnotationList.size());
+    }
+    
+    @Test
+    public void TestEventGetAnnotationsNonEmpty(){
     	//As this event is for testing, few of the requirements must be filled
     	Event annotatedEvent = new StateChangeEvent(null,null,getTimeStamp(),null);
     	String isLeafAnnotationValue = "true";
     	
     	annotatedEvent.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, isLeafAnnotationValue);
-    	List<Annotation> annotationList = annotatedEvent.getAnnotations();
-    	Assert.assertNotNull(annotationList);
-    	Assert.assertEquals(annotationList.size(), 1);
-    	Annotation annotation = annotationList.get(0);
+    	List<Annotation> nonEmptyAnnotationList = annotatedEvent.getAnnotations();
+    	Assert.assertNotNull(nonEmptyAnnotationList);
+    	Assert.assertEquals(1, nonEmptyAnnotationList.size());
+    	Annotation annotation = nonEmptyAnnotationList.get(0);
     	Assert.assertEquals(Event.ISLEAF_ANNOTATION_NAME, annotation.getKind());
     	Assert.assertEquals(isLeafAnnotationValue, annotation.getValue());
     }
