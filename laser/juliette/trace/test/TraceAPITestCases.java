@@ -1,5 +1,6 @@
 package laser.juliette.trace.test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -15,6 +16,8 @@ import laser.juliette.trace.StateChangeEvent;
 import laser.juliette.trace.StateChangeEvent.State;
 import laser.juliette.trace.Trace;
 import laser.juliette.trace.Traces;
+import laser.juliette.trace.filter.AllEventFilter;
+import laser.juliette.trace.filter.LeafEventFilter;
 
 public class TraceAPITestCases 
 {
@@ -170,6 +173,126 @@ public class TraceAPITestCases
     	Assert.assertEquals(testEvent, newEventsItr2.next());
     	Assert.assertEquals(testEvent2, newEventsItr2.next());
     }
+    
+    @Test
+    public void testTraceIteratorAllForward() {
+    	List<Event> newEventList = new ArrayList<Event>();
+    	Trace newTrace = new Trace();
+    	Event event1 = new StateChangeEvent("rootStep", StateChangeEvent.State.posted, this.getTimeStamp(), null);
+    	event1.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
+    	newEventList.add(event1);
+    	newTrace.add(event1);
+    	Event event2 = new StateChangeEvent("leafStep1", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event2.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
+    	newEventList.add(event2);
+    	newTrace.add(event2);
+    	Event event3 = new StateChangeEvent("nonleafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event3.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
+    	newEventList.add(event3);
+    	newTrace.add(event3);
+    	Event event4 = new StateChangeEvent("leafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event4.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
+    	newEventList.add(event4);
+    	newTrace.add(event4);
+    	Iterator<Event> eventsItr = newTrace.iterator(new AllEventFilter(), false);
+    	Assert.assertNotNull(eventsItr);
+    	// Check from left to right
+    	for (int i = 0; i < newEventList.size(); i++) {
+    		Assert.assertTrue(eventsItr.hasNext());
+    		Event newEventExpected = newEventList.get(i);
+    		Event newEventActual = eventsItr.next();
+    		Assert.assertEquals(newEventExpected, newEventActual);
+    	} // end for i
+    }
+    
+    @Test
+    public void testTraceIteratorAllReverse() {
+    	List<Event> newEventList = new ArrayList<Event>();
+    	Trace newTrace = new Trace();
+    	Event event1 = new StateChangeEvent("rootStep", StateChangeEvent.State.posted, this.getTimeStamp(), null);
+    	event1.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
+    	newEventList.add(event1);
+    	newTrace.add(event1);
+    	Event event2 = new StateChangeEvent("leafStep1", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event2.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
+    	newEventList.add(event2);
+    	newTrace.add(event2);
+    	Event event3 = new StateChangeEvent("nonleafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event3.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
+    	newEventList.add(event3);
+    	newTrace.add(event3);
+    	Event event4 = new StateChangeEvent("leafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event4.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
+    	newEventList.add(event4);
+    	newTrace.add(event4);
+    	Iterator<Event> eventsItr = newTrace.iterator(new AllEventFilter(), true);
+    	Assert.assertNotNull(eventsItr);
+    	// Check from right to left
+    	for (int i = newEventList.size() - 1; i >= 0; i--) {
+    		Assert.assertTrue(eventsItr.hasNext());
+    		Event newEventExpected = newEventList.get(i);
+    		Event newEventActual = eventsItr.next();
+    		Assert.assertEquals(newEventExpected, newEventActual);
+    	} // end for i
+    }
+    
+    @Test
+    public void testTraceIteratorLeafForward() {
+    	List<Event> newEventList = new ArrayList<Event>();
+    	Trace newTrace = new Trace();
+    	Event event1 = new StateChangeEvent("rootStep", StateChangeEvent.State.posted, this.getTimeStamp(), null);
+    	event1.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
+    	newTrace.add(event1);
+    	Event event2 = new StateChangeEvent("leafStep1", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event2.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
+    	newEventList.add(event2);
+    	newTrace.add(event2);
+    	Event event3 = new StateChangeEvent("nonleafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event3.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
+    	newTrace.add(event3);
+    	Event event4 = new StateChangeEvent("leafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event4.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
+    	newEventList.add(event4);
+    	newTrace.add(event4);
+    	Iterator<Event> eventsItr = newTrace.iterator(new LeafEventFilter(), false);
+    	Assert.assertNotNull(eventsItr);
+    	// Check from left to right
+    	for (int i = 0; i < newEventList.size(); i++) {
+    		Assert.assertTrue(eventsItr.hasNext());
+    		Event newEventExpected = newEventList.get(i);
+    		Event newEventActual = eventsItr.next();
+    		Assert.assertEquals(newEventExpected, newEventActual);
+    	} // end for i
+    }
+    
+    @Test
+    public void testTraceIteratorLeafReverse() {
+    	List<Event> newEventList = new ArrayList<Event>();
+    	Trace newTrace = new Trace();
+    	Event event1 = new StateChangeEvent("rootStep", StateChangeEvent.State.posted, this.getTimeStamp(), null);
+    	event1.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
+    	newTrace.add(event1);
+    	Event event2 = new StateChangeEvent("leafStep1", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event2.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
+    	newEventList.add(event2);
+    	newTrace.add(event2);
+    	Event event3 = new StateChangeEvent("nonleafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event3.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
+    	newTrace.add(event3);
+    	Event event4 = new StateChangeEvent("leafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
+    	event4.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
+    	newEventList.add(event4);
+    	newTrace.add(event4);
+    	Iterator<Event> eventsItr = newTrace.iterator(new LeafEventFilter(), true);
+    	Assert.assertNotNull(eventsItr);
+    	// Check from right to left
+    	for (int i = newEventList.size() - 1; i >= 0; i--) {
+    		Assert.assertTrue(eventsItr.hasNext());
+    		Event newEventExpected = newEventList.get(i);
+    		Event newEventActual = eventsItr.next();
+    		Assert.assertEquals(newEventExpected, newEventActual);
+    	} // end for i
+    }   
     
     @Test
     public void testTraceGetPropertyDoesNotExist() {
