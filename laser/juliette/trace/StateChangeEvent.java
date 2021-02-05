@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, University of Massachusetts Amherst
+ * Copyright (c) 2006, 2019, University of Massachusetts Amherst
  * All Rights Reserved.
  */
 package laser.juliette.trace;
@@ -26,7 +26,8 @@ public class StateChangeEvent extends Event {
         terminating,
         terminated,
         retracted,
-        optedout
+        optedout,
+        cancelled
         };
         
     /**
@@ -109,6 +110,19 @@ public class StateChangeEvent extends Event {
      */
     public Controller getController() {
         return controller;
+    }
+    
+    /**
+     * Returns a String representation of this Object.
+     * 
+     * @return A String representation of this Object
+     */
+    public String toString() {
+    	String stringRep = super.toString();
+    	
+    	stringRep += " " + this.getState();
+    	
+    	return stringRep;
     }
 
     private State state;

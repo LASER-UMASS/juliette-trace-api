@@ -108,6 +108,17 @@ public abstract class Event implements Serializable {
     }
     
     /**
+     * Returns a String representation of this Object.
+     * 
+     * @return A String representation of this Object
+     */
+    public String toString() {
+    	String stringRep = this.getID() + ") " + this.getAgentName() + " \"" + this.getEventName() + "\"";
+    	
+    	return stringRep;
+    }
+    
+    /**
      * Event annotations are stored as kind, value pairs. This class
      * represent that pair.
      */
