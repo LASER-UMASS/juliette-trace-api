@@ -16,6 +16,7 @@ class XMLSupport {
     static final String OBSERVED_EVENT = "observed-event";
     static final String STATE_CHANGE_EVENT = "state-change-event";
     static final String AGENT = "agent";
+    static final String SEQUENCING_KIND = "sequencing-kind";
     static final String STATE = "state";
     static final String TIMESTAMP = "timestamp";
     static final String ANCESTOR = "ancestor";

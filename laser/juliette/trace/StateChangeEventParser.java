@@ -65,6 +65,7 @@ class StateChangeEventParser extends Parser {
 		// Create the event
 		StateChangeEvent event = new StateChangeEvent(attrs.getValue(XMLSupport.AGENT),
 				attrs.getValue(XMLSupport.NAME),
+				StateChangeEvent.SequencingKind.valueOf(attrs.getValue(XMLSupport.SEQUENCING_KIND)),
 				StateChangeEvent.State.valueOf(attrs.getValue(XMLSupport.STATE)),
 				Long.parseLong(attrs.getValue(XMLSupport.TIMESTAMP)),
 				ancestor,
@@ -73,11 +74,12 @@ class StateChangeEventParser extends Parser {
 				context.get(),
 				controller.get() );
 		// Add the annotations to that event
-		for (String currentAnnotationKind : annotations.keySet()) {
-			String currentAnnotationValue = annotations.get(currentAnnotationKind);
-			event.addAnnotation(currentAnnotationKind, currentAnnotationValue);
-		} // end for currentAnnotationKind
-		
+		if (annotations != null) {
+			for (String currentAnnotationKind : annotations.keySet()) {
+				String currentAnnotationValue = annotations.get(currentAnnotationKind);
+				event.addAnnotation(currentAnnotationKind, currentAnnotationValue);
+			} // end for currentAnnotationKind
+		}
 		ancestors.put(attrs.getValue(XMLSupport.ID), event);
 		trace.add(event);
 		super.endElement();

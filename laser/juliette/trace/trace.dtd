@@ -16,6 +16,7 @@
 <!ELEMENT state-change-event ( annotation | parameter | result | context | reactive-controller | cardinality-controller | parameter-controller | predicate-controller  )* >
 <!ATTLIST state-change-event agent CDATA #REQUIRED
 							 name CDATA #REQUIRED
+							 sequencing-kind ( leaf | nonleaf_seq | nonleaf_try | nonleaf_par | nonleaf_cho ) #REQUIRED
                              state ( posted | starting | started | completing | completed | terminating | terminated | retracted | optedout ) #REQUIRED
                              timestamp CDATA #REQUIRED
                              ancestor IDREF #IMPLIED

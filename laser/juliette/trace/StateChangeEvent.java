@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2019, University of Massachusetts Amherst
+ * Copyright (c) 2006, 2019 - 2021, University of Massachusetts Amherst
  * All Rights Reserved.
  */
 package laser.juliette.trace;
@@ -14,6 +14,17 @@ import java.util.Map;
  */
 public class StateChangeEvent extends Event {
     
+	/**
+	 * Enumeration of the possible sequencing kinds of a Little-JIL step instance.
+	 */
+	public static enum SequencingKind {
+		leaf,
+		nonleaf_seq,
+		nonleaf_try,
+		nonleaf_par,
+		nonleaf_cho
+	}
+	
     /**
      * Enumeration of the possible states of a Little-JIL step instance.
      */
@@ -34,17 +45,19 @@ public class StateChangeEvent extends Event {
      * Minimal constructor for a state change event. All optional fields
      * are set to null, and the agent is specified as UNKNOWN_AGENT.
      * @param step the name of the step
+     * @param seqKind the new sequencing kind for the step
      * @param state the new state for the step
      * @param timestamp the timestamp for the event
      */
-    public StateChangeEvent(String step, State state, long timestamp, Event ancestor) {
-        this(UNKNOWN_AGENT, step, state, timestamp, null, null, null, null, null);
+    public StateChangeEvent(String step, SequencingKind seqKind, State state, long timestamp, Event ancestor) {
+        this(UNKNOWN_AGENT, step, seqKind, state, timestamp, null, null, null, null, null);
     }
     
     /**
      * Create a new state change event.
      * @param agent the agent associated with the step or UNKNOWN_AGENT
      * @param step the step name
+     * @param seqKind the new sequencing kind for the step
      * @param state the new state for the step
      * @param timestamp the timestamp for the event
      * @param ancestor the ancestor of this event
@@ -53,13 +66,23 @@ public class StateChangeEvent extends Event {
      * @param context the instance context or null
      * @param controller the instance controller or null
      */
-    public StateChangeEvent(String agent, String step, State state, long timestamp, Event ancestor, Map<String, String> parameters, List<String> results, Context context, Controller controller) {
+    public StateChangeEvent(String agent, String step, SequencingKind seqKind, State state, long timestamp, Event ancestor, Map<String, String> parameters, List<String> results, Context context, Controller controller) {
         super(agent, step, timestamp, ancestor);
+        this.seqKind = seqKind;
         this.state = state;
         this.parameters = parameters;
         this.results = results;
         this.context = context;
         this.controller = controller;
+    }
+    
+    /**
+     * Gets the sequencing kind of the step instance.
+     * 
+     * @return The sequencing kind of the step instance
+     */
+    public SequencingKind getSequencingKind() {
+    	return this.seqKind;
     }
     
     /**
@@ -125,6 +148,7 @@ public class StateChangeEvent extends Event {
     	return stringRep;
     }
 
+    private SequencingKind seqKind;
     private State state;
     private Map<String, String> parameters;
     private List<String> results;

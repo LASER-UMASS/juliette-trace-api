@@ -2,7 +2,8 @@ package laser.juliette.trace.filter;
 
 import laser.juliette.trace.Event;
 import laser.juliette.trace.EventFilter;
-import laser.juliette.trace.Event.Annotation;
+import laser.juliette.trace.StateChangeEvent.SequencingKind;
+import laser.juliette.trace.StateChangeEvent;
 
 
 public class LeafEventFilter implements EventFilter 
@@ -13,14 +14,13 @@ public class LeafEventFilter implements EventFilter
 	
 	@Override
 	public boolean accept(Event event) {
-		Annotation isLeafAnnotation = event.getAnnotation(Event.ISLEAF_ANNOTATION_NAME);
-		if (isLeafAnnotation == null) {
-			return false;
+		if (event instanceof StateChangeEvent) {
+			StateChangeEvent stateChangeEvent = (StateChangeEvent)event;
+			
+			return (stateChangeEvent.getSequencingKind() == SequencingKind.leaf);
 		}
-		else {
-			Boolean isLeaf = new Boolean(isLeafAnnotation.getValue());
-			return isLeaf;
-		}
+		
+		return false;
 	}
 
 }

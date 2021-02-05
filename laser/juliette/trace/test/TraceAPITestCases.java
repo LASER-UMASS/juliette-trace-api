@@ -1,6 +1,5 @@
 package laser.juliette.trace.test;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -13,11 +12,10 @@ import org.junit.Assert;
 import laser.juliette.trace.Event;
 import laser.juliette.trace.Event.Annotation;
 import laser.juliette.trace.StateChangeEvent;
+import laser.juliette.trace.StateChangeEvent.SequencingKind;
 import laser.juliette.trace.StateChangeEvent.State;
 import laser.juliette.trace.Trace;
 import laser.juliette.trace.Traces;
-import laser.juliette.trace.filter.AllEventFilter;
-import laser.juliette.trace.filter.LeafEventFilter;
 
 public class TraceAPITestCases 
 {
@@ -31,29 +29,31 @@ public class TraceAPITestCases
     @Test
     public void testNewTracesNonNullAndEmpty() {
     	Traces newTraces = new Traces();
-    	Assert.assertNotNull(newTraces);
-    	Assert.assertTrue(newTraces.isEmpty());
+    	Assert.assertNotNull("The newTraces should be non-null.", newTraces);
+    	Assert.assertTrue("The new Traces should be empty.", newTraces.isEmpty());
     }
     
     @Test
     public void testNewTraceNonNullAndEmpty() {
     	Trace newTrace = new Trace();
-    	Assert.assertNotNull(newTrace); 	
-    	Assert.assertFalse(newTrace.iterator().hasNext());
+    	Assert.assertNotNull("The new Trace should be non-null", newTrace); 	
+    	Assert.assertFalse("The new Trace should be empty.", newTrace.iterator().hasNext());
     }
     
     @Test 
     public void testNewStateChangeEventUnknownAgent() {
     	Event parentEvent = null;
     	String childEventName = "perform blood transfusion";
+    	SequencingKind childEventSeqKind = SequencingKind.nonleaf_seq;
     	State childEventState = State.posted;
     	Date childEventDateTime = Calendar.getInstance().getTime();
     	long childEventTimestamp = childEventDateTime.getTime();
-    	StateChangeEvent childEvent = new StateChangeEvent(childEventName, childEventState, childEventTimestamp, parentEvent);
+    	StateChangeEvent childEvent = new StateChangeEvent(childEventName, childEventSeqKind, childEventState, childEventTimestamp, parentEvent);
     	Assert.assertNotNull(childEvent);
     	Assert.assertEquals(parentEvent, childEvent.getAncestor());
     	Assert.assertEquals(StateChangeEvent.UNKNOWN_AGENT, childEvent.getAgentName());
     	Assert.assertEquals(childEventName, childEvent.getEventName());
+    	Assert.assertEquals(childEventSeqKind, childEvent.getSequencingKind());
     	Assert.assertEquals(childEventState, childEvent.getState());
     	Assert.assertEquals(childEventTimestamp, childEvent.getTimestamp());
     }
@@ -70,7 +70,7 @@ public class TraceAPITestCases
     	
     	Assert.assertTrue(childParameters.get("Patient").equals("Name"));
     	
-    	StateChangeEvent childEvent = new StateChangeEvent(StateChangeEvent.UNKNOWN_AGENT,childEventName,State.posted,childEventTimestamp,parentEvent,childParameters,null,null,null);
+    	StateChangeEvent childEvent = new StateChangeEvent(StateChangeEvent.UNKNOWN_AGENT,childEventName,SequencingKind.nonleaf_seq, State.posted,childEventTimestamp,parentEvent,childParameters,null,null,null);
     	Assert.assertNotNull(childEvent);
     	Assert.assertEquals(childEvent.getParameters().get("Patient"),childParameters.get("Patient"));
     }
@@ -86,7 +86,7 @@ public class TraceAPITestCases
     	Traces newTraces = new Traces();
     	Trace newTrace = new Trace();
     	newTraces.add(newTrace);
-    	Assert.assertEquals(1, newTraces.size());
+    	Assert.assertEquals(newTraces.size(), 1);
     	Assert.assertTrue(newTraces.get(0).equals(newTrace));
     	Assert.assertTrue(newTraces.contains(newTrace));
     	Assert.assertNotNull(newTraces.get(0));
@@ -94,7 +94,7 @@ public class TraceAPITestCases
     	newTraces.add(secondTrace);
     	Assert.assertTrue(newTraces.contains(newTrace));
     	Assert.assertTrue(newTraces.contains(secondTrace));
-    	Assert.assertEquals(2, newTraces.size());
+    	Assert.assertEquals(newTraces.size(), 2);
     	Assert.assertTrue(newTraces.get(1).equals(secondTrace));
     	Assert.assertFalse(newTraces.get(1).equals(newTrace));
     }
@@ -105,7 +105,7 @@ public class TraceAPITestCases
     	Trace newTrace = new Trace();
     	newTraces.add(newTrace);
     	newTraces.remove(0);
-    	Assert.assertEquals(0, newTraces.size());
+    	Assert.assertEquals(newTraces.size(), 0);
     	Assert.assertFalse(newTraces.contains(newTrace));
     }
     
@@ -124,10 +124,11 @@ public class TraceAPITestCases
     	Event testEvent;
     	Event testParentEvent = null;
     	String testEventName = "perform mock blood transfusion";
+    	SequencingKind testEventSeqKind = SequencingKind.nonleaf_seq;
     	State testEventState = State.posted;
     	Date testEventDateTime = Calendar.getInstance().getTime();
     	long testEventTimestamp = testEventDateTime.getTime();
-    	testEvent = new StateChangeEvent(testEventName, testEventState, testEventTimestamp, testParentEvent);
+    	testEvent = new StateChangeEvent(testEventName, testEventSeqKind, testEventState, testEventTimestamp, testParentEvent);
     	newTrace.add(testEvent);
     	Assert.assertEquals(testEvent, newTrace.get(testEvent.getID()));
     }
@@ -138,10 +139,11 @@ public class TraceAPITestCases
     	Event testEvent;
     	Event testParentEvent = null;
     	String testEventName = "perform mock blood transfusion";
+    	SequencingKind testEventSeqKind = SequencingKind.nonleaf_seq;
     	State testEventState = State.posted;
     	Date testEventDateTime = Calendar.getInstance().getTime();
     	long testEventTimestamp = testEventDateTime.getTime();
-    	testEvent = new StateChangeEvent(testEventName, testEventState, testEventTimestamp, testParentEvent);
+    	testEvent = new StateChangeEvent(testEventName, testEventSeqKind, testEventState, testEventTimestamp, testParentEvent);
     	newTrace.add(testEvent);
     	Assert.assertEquals(1, newTrace.length());
     	Event testEventPrime = newTrace.iterator().next();
@@ -154,10 +156,11 @@ public class TraceAPITestCases
     	Event testEvent;
     	Event testParentEvent = null;
     	String testEventName = "perform mock blood transfusion";
+    	SequencingKind testEventSeqKind = SequencingKind.nonleaf_seq;
     	State testEventState = State.posted;
     	Date testEventDateTime = Calendar.getInstance().getTime();
     	long testEventTimestamp = testEventDateTime.getTime();
-    	testEvent = new StateChangeEvent(testEventName, testEventState, testEventTimestamp, testParentEvent);
+    	testEvent = new StateChangeEvent(testEventName, testEventSeqKind, testEventState, testEventTimestamp, testParentEvent);
     	newTrace.add(testEvent);
     	Assert.assertEquals(1, newTrace.length());
     	Iterator<Event> newEventsItr = newTrace.iterator();
@@ -166,7 +169,7 @@ public class TraceAPITestCases
     	Event testEvent2;
     	Date testEvent2DateTime = Calendar.getInstance().getTime();
     	long testEvent2Timestamp = testEvent2DateTime.getTime();
-    	testEvent2 = new StateChangeEvent("perform actual blood transfusion", State.posted, testEvent2Timestamp, testEvent);
+    	testEvent2 = new StateChangeEvent("perform actual blood transfusion", testEventSeqKind, State.posted, testEvent2Timestamp, testEvent);
     	newTrace.add(testEvent2);
     	Assert.assertEquals(2, newTrace.length());
     	Iterator<Event> newEventsItr2 = newTrace.iterator();
@@ -174,132 +177,10 @@ public class TraceAPITestCases
     	Assert.assertEquals(testEvent2, newEventsItr2.next());
     }
     
-    @Test
-    public void testTraceIteratorAllForward() {
-    	List<Event> newEventList = new ArrayList<Event>();
-    	Trace newTrace = new Trace();
-    	Event event1 = new StateChangeEvent("rootStep", StateChangeEvent.State.posted, this.getTimeStamp(), null);
-    	event1.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
-    	newEventList.add(event1);
-    	newTrace.add(event1);
-    	Event event2 = new StateChangeEvent("leafStep1", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event2.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
-    	newEventList.add(event2);
-    	newTrace.add(event2);
-    	Event event3 = new StateChangeEvent("nonleafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event3.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
-    	newEventList.add(event3);
-    	newTrace.add(event3);
-    	Event event4 = new StateChangeEvent("leafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event4.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
-    	newEventList.add(event4);
-    	newTrace.add(event4);
-    	Iterator<Event> eventsItr = newTrace.iterator(new AllEventFilter(), false);
-    	Assert.assertNotNull(eventsItr);
-    	// Check from left to right
-    	for (int i = 0; i < newEventList.size(); i++) {
-    		Assert.assertTrue(eventsItr.hasNext());
-    		Event newEventExpected = newEventList.get(i);
-    		Event newEventActual = eventsItr.next();
-    		Assert.assertEquals(newEventExpected, newEventActual);
-    	} // end for i
-    }
-    
-    @Test
-    public void testTraceIteratorAllReverse() {
-    	List<Event> newEventList = new ArrayList<Event>();
-    	Trace newTrace = new Trace();
-    	Event event1 = new StateChangeEvent("rootStep", StateChangeEvent.State.posted, this.getTimeStamp(), null);
-    	event1.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
-    	newEventList.add(event1);
-    	newTrace.add(event1);
-    	Event event2 = new StateChangeEvent("leafStep1", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event2.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
-    	newEventList.add(event2);
-    	newTrace.add(event2);
-    	Event event3 = new StateChangeEvent("nonleafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event3.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
-    	newEventList.add(event3);
-    	newTrace.add(event3);
-    	Event event4 = new StateChangeEvent("leafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event4.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
-    	newEventList.add(event4);
-    	newTrace.add(event4);
-    	Iterator<Event> eventsItr = newTrace.iterator(new AllEventFilter(), true);
-    	Assert.assertNotNull(eventsItr);
-    	// Check from right to left
-    	for (int i = newEventList.size() - 1; i >= 0; i--) {
-    		Assert.assertTrue(eventsItr.hasNext());
-    		Event newEventExpected = newEventList.get(i);
-    		Event newEventActual = eventsItr.next();
-    		Assert.assertEquals(newEventExpected, newEventActual);
-    	} // end for i
-    }
-    
-    @Test
-    public void testTraceIteratorLeafForward() {
-    	List<Event> newEventList = new ArrayList<Event>();
-    	Trace newTrace = new Trace();
-    	Event event1 = new StateChangeEvent("rootStep", StateChangeEvent.State.posted, this.getTimeStamp(), null);
-    	event1.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
-    	newTrace.add(event1);
-    	Event event2 = new StateChangeEvent("leafStep1", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event2.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
-    	newEventList.add(event2);
-    	newTrace.add(event2);
-    	Event event3 = new StateChangeEvent("nonleafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event3.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
-    	newTrace.add(event3);
-    	Event event4 = new StateChangeEvent("leafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event4.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
-    	newEventList.add(event4);
-    	newTrace.add(event4);
-    	Iterator<Event> eventsItr = newTrace.iterator(new LeafEventFilter(), false);
-    	Assert.assertNotNull(eventsItr);
-    	// Check from left to right
-    	for (int i = 0; i < newEventList.size(); i++) {
-    		Assert.assertTrue(eventsItr.hasNext());
-    		Event newEventExpected = newEventList.get(i);
-    		Event newEventActual = eventsItr.next();
-    		Assert.assertEquals(newEventExpected, newEventActual);
-    	} // end for i
-    }
-    
-    @Test
-    public void testTraceIteratorLeafReverse() {
-    	List<Event> newEventList = new ArrayList<Event>();
-    	Trace newTrace = new Trace();
-    	Event event1 = new StateChangeEvent("rootStep", StateChangeEvent.State.posted, this.getTimeStamp(), null);
-    	event1.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
-    	newTrace.add(event1);
-    	Event event2 = new StateChangeEvent("leafStep1", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event2.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
-    	newEventList.add(event2);
-    	newTrace.add(event2);
-    	Event event3 = new StateChangeEvent("nonleafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event3.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "false");
-    	newTrace.add(event3);
-    	Event event4 = new StateChangeEvent("leafStep2", StateChangeEvent.State.posted, getTimeStamp(), event1);
-    	event4.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, "true");
-    	newEventList.add(event4);
-    	newTrace.add(event4);
-    	Iterator<Event> eventsItr = newTrace.iterator(new LeafEventFilter(), true);
-    	Assert.assertNotNull(eventsItr);
-    	// Check from right to left
-    	for (int i = newEventList.size() - 1; i >= 0; i--) {
-    		Assert.assertTrue(eventsItr.hasNext());
-    		Event newEventExpected = newEventList.get(i);
-    		Event newEventActual = eventsItr.next();
-    		Assert.assertEquals(newEventExpected, newEventActual);
-    	} // end for i
-    }   
-    
-    @Test
     public void testTraceGetPropertyDoesNotExist() {
     	// Attempt to get a trace property that doesn't exist
     	Trace newTrace = new Trace();
-    	Assert.assertNull(newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));    
-    	Assert.assertEquals(0, newTrace.getPropertyNames().size());
+    	Assert.assertEquals(null, newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));    
     }
     
     @Test
@@ -307,55 +188,34 @@ public class TraceAPITestCases
     	// Attempt to get a trace property that does exist
     	Trace newTrace = new Trace();
     	String newProcessName = "perform mock blood transfusion";
-    	Assert.assertNull(newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));
+    	Assert.assertEquals(newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME), null);
     	newTrace.setProperty(Trace.PROCESS_NAME_PROPERTY_NAME, newProcessName);
     	Assert.assertEquals(newProcessName, newTrace.getProperty(Trace.PROCESS_NAME_PROPERTY_NAME));
-    	Assert.assertEquals(1, newTrace.getPropertyNames().size());
-    	Assert.assertEquals(Trace.PROCESS_NAME_PROPERTY_NAME, newTrace.getPropertyNames().iterator().next());
     }
     
     @Test
-    public void testEventGetAnnotationNull() {
-    	Event plainEvent = new StateChangeEvent(null,State.posted,getTimeStamp(),null); //This event has no Annotations
-    	Annotation nullAnnotation = plainEvent.getAnnotation(Event.ISLEAF_ANNOTATION_NAME);
-    	Assert.assertNull(nullAnnotation);
-    }    
-    
-    @Test
-    public void testEventGetAnnotationNonNull() {
-    	Event annotatedEvent = new StateChangeEvent(null,null,getTimeStamp(),null);
-    	String isLeafAnnotationValue = "true";
+    public void testEventGetAnnotationDoesNotExist(){
+    	Event plainEvent = new StateChangeEvent(null,SequencingKind.leaf, State.posted,getTimeStamp(),null); //This event has no Annotations
+    	List<Annotation> emptyAnnotations = plainEvent.getAnnotations();
+    	Assert.assertNotNull(Trace.USER_COMMENTS_ANNOTATION_NAME, emptyAnnotations);
     	
-    	annotatedEvent.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, isLeafAnnotationValue);
-    	Annotation nonNullAnnotation = annotatedEvent.getAnnotation(Event.ISLEAF_ANNOTATION_NAME);
-    	Assert.assertNotNull(nonNullAnnotation);
-    	Assert.assertEquals(Event.ISLEAF_ANNOTATION_NAME, nonNullAnnotation.getKind());
-    	Assert.assertEquals(isLeafAnnotationValue, nonNullAnnotation.getValue());
-    }
-    
-    @Test
-    public void testEventGetAnnotationsEmpty(){
-    	Event plainEvent = new StateChangeEvent(null,State.posted,getTimeStamp(),null); //This event has no Annotations
-    	List<Annotation> emptyAnnotationList = plainEvent.getAnnotations();
-    		
     	//This list should be completely empty
-    	Assert.assertNotNull(emptyAnnotationList);
-    	Assert.assertEquals(0, emptyAnnotationList.size());
+    	Assert.assertEquals(emptyAnnotations.size(), 0);
     }
     
     @Test
-    public void TestEventGetAnnotationsNonEmpty(){
+    public void TestEventGetAnnotationDoesExist(){
     	//As this event is for testing, few of the requirements must be filled
-    	Event annotatedEvent = new StateChangeEvent(null,null,getTimeStamp(),null);
-    	String isLeafAnnotationValue = "true";
+    	Event annotatedEvent = new StateChangeEvent("administer heparin",SequencingKind.leaf,State.posted,getTimeStamp(),null);
+    	String userCommentsAnnotationValue = "This is a clinical note.";
     	
-    	annotatedEvent.addAnnotation(Event.ISLEAF_ANNOTATION_NAME, isLeafAnnotationValue);
-    	List<Annotation> nonEmptyAnnotationList = annotatedEvent.getAnnotations();
-    	Assert.assertNotNull(nonEmptyAnnotationList);
-    	Assert.assertEquals(1, nonEmptyAnnotationList.size());
-    	Annotation annotation = nonEmptyAnnotationList.get(0);
-    	Assert.assertEquals(Event.ISLEAF_ANNOTATION_NAME, annotation.getKind());
-    	Assert.assertEquals(isLeafAnnotationValue, annotation.getValue());
+    	annotatedEvent.addAnnotation(Trace.USER_COMMENTS_ANNOTATION_NAME, userCommentsAnnotationValue);
+    	List<Annotation> annotationList = annotatedEvent.getAnnotations();
+    	Assert.assertNotNull(annotationList);
+    	Assert.assertEquals(annotationList.size(), 1);
+    	Annotation annotation = annotationList.get(0);
+    	Assert.assertEquals(Trace.USER_COMMENTS_ANNOTATION_NAME, annotation.getKind());
+    	Assert.assertEquals(userCommentsAnnotationValue, annotation.getValue());
     }
     
 } // end for TraceAPITestCases

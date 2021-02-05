@@ -106,6 +106,7 @@ public class XMLIO {
 		
 		eventnode.setAttribute(XMLSupport.AGENT, event.getAgentName());
 		eventnode.setAttribute(XMLSupport.NAME, event.getEventName());
+		eventnode.setAttribute(XMLSupport.SEQUENCING_KIND, event.getSequencingKind().name());
 		eventnode.setAttribute(XMLSupport.STATE, event.getState().name());
 		eventnode.setAttribute(XMLSupport.TIMESTAMP, Long.toString(event.getTimestamp()));
 		if (event.getAncestor() != null) {
