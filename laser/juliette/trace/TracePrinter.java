@@ -38,7 +38,7 @@ public class TracePrinter
 			StateChangeEvent currentStateChangeEvent = (StateChangeEvent)currentTraceEvent;
 			
 			printString += " " + currentStateChangeEvent.getState() + " \"" + currentStateChangeEvent.getEventName() + "\".";
-			Map<String,String> currentParams = currentStateChangeEvent.getParameters();
+			Map<String,Parameter> currentParams = currentStateChangeEvent.getParameters();
 			Controller currentController = currentStateChangeEvent.getController();
 			if (currentController instanceof PredicateController) {
 				printString += " The predicate is: " + ((PredicateController)currentController).getPredicate() + ".";

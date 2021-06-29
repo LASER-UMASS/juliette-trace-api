@@ -66,7 +66,7 @@ public class StateChangeEvent extends Event {
      * @param context the instance context or null
      * @param controller the instance controller or null
      */
-    public StateChangeEvent(String agent, String step, SequencingKind seqKind, State state, long timestamp, Event ancestor, Map<String, String> parameters, List<String> results, Context context, Controller controller) {
+    public StateChangeEvent(String agent, String step, SequencingKind seqKind, State state, long timestamp, Event ancestor, Map<String, Parameter> parameters, List<String> results, Context context, Controller controller) {
         super(agent, step, timestamp, ancestor);
         this.seqKind = seqKind;
         this.state = state;
@@ -99,7 +99,7 @@ public class StateChangeEvent extends Event {
      * represented by system defined tokens instead of actual values.
      * @return the parameter map or null
      */
-    public Map<String, String> getParameters() {
+    public Map<String, Parameter> getParameters() {
     	if (parameters==null) return null;
         return Collections.unmodifiableMap(parameters);
     }
@@ -150,7 +150,7 @@ public class StateChangeEvent extends Event {
 
     private SequencingKind seqKind;
     private State state;
-    private Map<String, String> parameters;
+    private Map<String, Parameter> parameters;
     private List<String> results;
     private Context context;
     private Controller controller;

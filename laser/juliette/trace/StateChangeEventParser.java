@@ -1,7 +1,7 @@
 package laser.juliette.trace;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -26,12 +26,12 @@ class StateChangeEventParser extends Parser {
 	void startElement(String tag, Attributes attrs) throws SAXException {
 		if (tag.equals(XMLSupport.ANNOTATION)) {
 			if (annotations == null) {
-				annotations = new HashMap<String, String>();
+				annotations = new LinkedHashMap<String, String>();
 			}
 			stack.push(new AnnotationParser(stack, annotations, attrs));
 		} else if (tag.equals(XMLSupport.PARAMETER)) {
 			if (parameters == null) {
-				parameters = new HashMap<String, String>();
+				parameters = new LinkedHashMap<String, Parameter>();
 			}
 			stack.push(new ParameterParser(stack, parameters, attrs));
 		} else if (tag.equals(XMLSupport.RESULT)) {
@@ -102,7 +102,7 @@ class StateChangeEventParser extends Parser {
 	private Map<String, Event> ancestors;
 	
 	private Map<String, String> annotations;
-    private Map<String, String> parameters;
+    private Map<String, Parameter> parameters;
     private List<String> results;
     private Cell<Context> context = new Cell<Context>();;
     private Cell<Controller> controller = new Cell<Controller>();

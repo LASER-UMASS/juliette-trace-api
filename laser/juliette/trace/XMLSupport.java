@@ -12,6 +12,7 @@ class XMLSupport {
     static final String TRACE = "trace";
     static final String PROPERTY = "property";
     static final String NAME = "name";
+    static final String TYPE = "type";
     static final String VALUE = "value";
     static final String OBSERVED_EVENT = "observed-event";
     static final String STATE_CHANGE_EVENT = "state-change-event";

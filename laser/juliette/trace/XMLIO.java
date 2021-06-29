@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2019, University of Massachusetts Amherst
+ * Copyright (c) 2009, 2019, 2021, University of Massachusetts Amherst
  * All Rights Reserved.
  */
 package laser.juliette.trace;
@@ -194,14 +194,17 @@ public class XMLIO {
 	}
 
 	private static void createParametersNode(Document doc, Element eventnode,
-			Map<String, String> parameters) {
+			Map<String, Parameter> parameters) {
 		if (parameters != null && !parameters.isEmpty()) {
 			for (String name: parameters.keySet()) {
+				Parameter parameter = parameters.get(name);
 				Element parameternode = doc.createElement(XMLSupport.PARAMETER);
 				eventnode.appendChild(parameternode);
 				
-				parameternode.setAttribute(XMLSupport.NAME, name);
-				parameternode.setAttribute(XMLSupport.VALUE, parameters.get(name));
+				parameternode.setAttribute(XMLSupport.NAME, parameter.getName());
+				parameternode.setAttribute(XMLSupport.KIND, parameter.getKind().name());
+				parameternode.setAttribute(XMLSupport.TYPE, parameter.getType());
+				parameternode.setAttribute(XMLSupport.VALUE, parameter.getValue());
 			}
 		}
 	}

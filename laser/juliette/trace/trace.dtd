@@ -28,6 +28,8 @@
 
 <!ELEMENT parameter EMPTY >
 <!ATTLIST parameter name CDATA #REQUIRED
+	            kind CDATA #REQUIRED
+	            type CDATA #REQUIRED
                     value CDATA #REQUIRED >
                     
  <!ELEMENT result EMPTY >
