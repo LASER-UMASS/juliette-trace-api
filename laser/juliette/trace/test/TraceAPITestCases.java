@@ -11,7 +11,9 @@ import org.junit.Assert;
 
 import laser.juliette.trace.Event;
 import laser.juliette.trace.Event.Annotation;
+import laser.juliette.trace.Parameter;
 import laser.juliette.trace.StateChangeEvent;
+import laser.juliette.trace.Parameter.ParameterKind;
 import laser.juliette.trace.StateChangeEvent.SequencingKind;
 import laser.juliette.trace.StateChangeEvent.State;
 import laser.juliette.trace.Trace;
@@ -63,12 +65,14 @@ public class TraceAPITestCases
     	long childEventTimestamp = getTimeStamp();
     	Event parentEvent = null;
     	String childEventName = "perform blood transfusion";
-    	HashMap<String,String> childParameters = new HashMap<String,String>();
+    	HashMap<String,Parameter> childParameters = new HashMap<String,Parameter>();
     	Assert.assertNotNull(childParameters);
     	Assert.assertTrue(childParameters.isEmpty());
-    	childParameters.put("Patient","Name");
+    	String testParameterName = "patient";
+    	Parameter testParameter = new Parameter(testParameterName, ParameterKind.ARTIFACT, "Patient", "p1");
+    	childParameters.put(testParameterName,testParameter);
     	
-    	Assert.assertTrue(childParameters.get("Patient").equals("Name"));
+    	Assert.assertTrue(childParameters.get(testParameterName).equals(testParameter));
     	
     	StateChangeEvent childEvent = new StateChangeEvent(StateChangeEvent.UNKNOWN_AGENT,childEventName,SequencingKind.nonleaf_seq, State.posted,childEventTimestamp,parentEvent,childParameters,null,null,null);
     	Assert.assertNotNull(childEvent);
