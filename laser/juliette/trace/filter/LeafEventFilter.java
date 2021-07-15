@@ -8,12 +8,19 @@ import laser.juliette.trace.StateChangeEvent;
 
 public class LeafEventFilter implements EventFilter 
 {
+	/**
+	 * Automatically generated serial version UID
+	 */
+	private static final long serialVersionUID = 6742462514659916134L;
+
+	
 	public LeafEventFilter() {
 		super();
 	}
 	
 	@Override
-	public boolean accept(Event event) {
+	public boolean accept(Event event) 
+	{		
 		if (event instanceof StateChangeEvent) {
 			StateChangeEvent stateChangeEvent = (StateChangeEvent)event;
 			

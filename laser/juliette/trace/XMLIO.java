@@ -21,6 +21,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import laser.juliette.trace.Event.Annotation;
+import laser.juliette.trace.filter.AllParameterFilter;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -116,7 +117,7 @@ public class XMLIO {
 		
 		createAnnotationsNode(doc, eventnode, event.getAnnotations());
 		
-		createParametersNode(doc, eventnode, event.getParameters());
+		createParametersNode(doc, eventnode, event.getParameters(new AllParameterFilter()));
 		
 		if (event.getResults() != null && !event.getResults().isEmpty()) {
 			for (String result: event.getResults()) {

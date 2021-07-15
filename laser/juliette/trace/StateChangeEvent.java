@@ -5,6 +5,7 @@
 package laser.juliette.trace;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ public class StateChangeEvent extends Event {
      * Enumeration of the possible states of a Little-JIL step instance.
      */
     public static enum State {
+    	posting,
         posted,
         starting,
         started,
@@ -37,8 +39,11 @@ public class StateChangeEvent extends Event {
         terminating,
         terminated,
         retracted,
+        optingout,
         optedout,
-        cancelled
+        cancelled,
+        aborting,
+        aborted
         };
         
     /**
@@ -99,9 +104,19 @@ public class StateChangeEvent extends Event {
      * represented by system defined tokens instead of actual values.
      * @return the parameter map or null
      */
-    public Map<String, Parameter> getParameters() {
+    public Map<String, Parameter> getParameters(ParameterFilter filter) {
     	if (parameters==null) return null;
-        return Collections.unmodifiableMap(parameters);
+    	
+    	Map<String,Parameter> filteredParameters = new LinkedHashMap<String,Parameter>();
+    	for (String currentParameterName : this.parameters.keySet()) {
+    		Parameter currentParameterValue = this.parameters.get(currentParameterName);
+    		
+    		if (filter.accept(currentParameterValue)) {
+    			filteredParameters.put(currentParameterName, currentParameterValue);
+    		}
+    	} // end for currentParameterName
+    	
+        return filteredParameters;
     }
     
     /**

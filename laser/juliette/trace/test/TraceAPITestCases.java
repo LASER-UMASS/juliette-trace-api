@@ -18,6 +18,7 @@ import laser.juliette.trace.StateChangeEvent.SequencingKind;
 import laser.juliette.trace.StateChangeEvent.State;
 import laser.juliette.trace.Trace;
 import laser.juliette.trace.Traces;
+import laser.juliette.trace.filter.AllParameterFilter;
 
 public class TraceAPITestCases 
 {
@@ -76,7 +77,7 @@ public class TraceAPITestCases
     	
     	StateChangeEvent childEvent = new StateChangeEvent(StateChangeEvent.UNKNOWN_AGENT,childEventName,SequencingKind.nonleaf_seq, State.posted,childEventTimestamp,parentEvent,childParameters,null,null,null);
     	Assert.assertNotNull(childEvent);
-    	Assert.assertEquals(childEvent.getParameters().get("Patient"),childParameters.get("Patient"));
+    	Assert.assertEquals(childEvent.getParameters(new AllParameterFilter()).get("Patient"),childParameters.get("Patient"));
     }
     
     //To Do: testNewStateChangeEvent using the other constructor with input parameters

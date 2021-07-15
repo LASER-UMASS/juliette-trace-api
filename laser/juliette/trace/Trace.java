@@ -130,6 +130,8 @@ public class Trace implements Iterable<Event>, Serializable {
     private Map<String, String> properties = new HashMap<String, String>();
     
 	public static final String PROCESS_NAME_PROPERTY_NAME = "processName";
+	public static final String AGENT_NAMES_PROPERTY_NAME = "agentNames";
+	public static final String AGENT_NAMES_SEPARATOR = ",";
 	public static final String CREATED_TIMESTAMP_PROPERTY_NAME = "createdTimestamp";
 	public static final String UPDATED_TIMESTAMP_PROPERTY_NAME = "updatedTimestamp";	
 	
