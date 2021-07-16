@@ -14,7 +14,9 @@ import java.util.Map;
  * in a process trace.
  */
 public class StateChangeEvent extends Event {
-    
+   
+	public static final String HANDLER_CONTINUATION_ACTION_PROPERTY_NAME = "handler-continuation-action";
+	
 	/**
 	 * Enumeration of the possible sequencing kinds of a Little-JIL step instance.
 	 */
