@@ -4,6 +4,10 @@ import laser.juliette.trace.Parameter;
 import laser.juliette.trace.ParameterFilter;
 
 
+/**
+ * The ArtifactParameterFilter class accepts all Parameters corresponding 
+ * to artifacts.
+ */
 public class ArtifactParameterFilter implements ParameterFilter 
 {
 	/**

@@ -14,7 +14,14 @@ import java.util.Map;
  * in a process trace.
  */
 public class StateChangeEvent extends Event {
-   
+
+	/**
+	 * Automatically generated serial version UID
+	 */
+	private static final long serialVersionUID = 2474536657457195879L;
+
+	public static final String UNIQUE_STEP_ID_ANNOTATION_NAME = "unique-step-ID";
+
 	public static final String HANDLER_CONTINUATION_ACTION_PROPERTY_NAME = "handler-continuation-action";
 	
 	/**

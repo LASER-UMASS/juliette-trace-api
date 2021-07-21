@@ -4,6 +4,10 @@ import laser.juliette.trace.Parameter;
 import laser.juliette.trace.ParameterFilter;
 
 
+/**
+ * The ResourceParameterFilter class accepts all Parameters corresponding 
+ * to resources.
+ */
 public class ResourceParameterFilter implements ParameterFilter 
 {	
 	/**
