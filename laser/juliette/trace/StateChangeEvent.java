@@ -20,9 +20,12 @@ public class StateChangeEvent extends Event {
 	 */
 	private static final long serialVersionUID = 2474536657457195879L;
 
+	/** The step name for simple handlers */
+	public static final String SIMPLE_HANDLER_NAME = "simple handler";
+	
 	public static final String UNIQUE_STEP_ID_ANNOTATION_NAME = "unique-step-ID";
 
-	public static final String HANDLER_CONTINUATION_ACTION_PROPERTY_NAME = "handler-continuation-action";
+	public static final String HANDLER_CONTINUATION_ACTION_ANNOTATION_NAME = "handler-continuation-action";
 	
 	/**
 	 * Enumeration of the possible sequencing kinds of a Little-JIL step instance.
