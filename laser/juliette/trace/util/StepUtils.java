@@ -39,7 +39,7 @@ public class StepUtils
 		Event previousEvent = event.getAncestor();
 		while (previousEvent != null) {
 			if (filter.accept(previousEvent)) {
-				ancestry.set(0, previousEvent);
+				ancestry.add(0, previousEvent);
 			}
 			previousEvent = previousEvent.getAncestor();
 		} // end while
