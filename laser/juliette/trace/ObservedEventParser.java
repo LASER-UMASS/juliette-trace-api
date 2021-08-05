@@ -19,6 +19,8 @@ class ObservedEventParser extends EmptyTagParser {
 				attrs.getValue(XMLSupport.NAME),
 				Long.parseLong(attrs.getValue(XMLSupport.TIMESTAMP)),
 				ancestor);
+		// This sets the ID to the index in the list.
+		event.getID();
 		ancestors.put(attrs.getValue(XMLSupport.ID), event);
 		trace.add(event);
 	}

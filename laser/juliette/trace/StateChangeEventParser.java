@@ -73,6 +73,8 @@ class StateChangeEventParser extends Parser {
 				results,
 				context.get(),
 				controller.get() );
+		// Set the ID to the index in the list
+		event.getID();
 		// Add the annotations to that event
 		if (annotations != null) {
 			for (String currentAnnotationKind : annotations.keySet()) {
