@@ -9,8 +9,8 @@ import java.util.Set;
 
 
 /**
- * The StateChangeEventFilter class accepts all events that are StateChangeEvents
- * with the specified states (e.g., only posted).
+ * The StateChangeEventFilter class accepts all StateChangeEvents with the
+ * specified states (e.g., only posted).
  */
 public class StateChangeEventFilter implements EventFilter 
 {

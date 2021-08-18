@@ -20,10 +20,24 @@ public class TypeParameterFilter implements ParameterFilter
 		EQUALS
 	};
 	
+	/** The partial or full type name to be matched against */
 	private String type_;
+	
+	/** The type pattern (see above) */
 	private TypePattern typePattern_;
 	
 	
+	/**
+	 * Creates a new TypeParameterFilter where the partial or full type is 
+	 * matched against the given type pattern.
+	 * 
+	 * PRECONDITIONS: 
+	 * - The type must be non-null and non-empty.
+	 * - The type pattern must be non-null.
+	 * 
+	 * @param type The partial or full type to be matched against
+	 * @param typePattern The type pattern (see above)
+	 */
 	public TypeParameterFilter(String type, TypePattern typePattern) {
 		super();
 		

@@ -6,6 +6,9 @@ import laser.juliette.trace.StateChangeEvent.SequencingKind;
 import laser.juliette.trace.StateChangeEvent;
 
 
+/**
+ * The LeafEventFilter class accepts all StateChangeEvents corresponding to leaf steps.
+ */
 public class LeafEventFilter implements EventFilter 
 {
 	/**

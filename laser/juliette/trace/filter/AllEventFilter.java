@@ -4,6 +4,10 @@ import laser.juliette.trace.Event;
 import laser.juliette.trace.EventFilter;
 
 
+/**
+ * The AllEventFilter class conceptually accepts all non-null events in the 
+ * given trace.
+ */
 public class AllEventFilter implements EventFilter 
 {
 	/**

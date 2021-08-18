@@ -46,6 +46,10 @@ public class NameParameterFilter implements ParameterFilter
 	 * Creates a new NameParameterFilter where the partial or full name is 
 	 * matched against the given name pattern.
 	 * 
+	 * PRECONDITIONS: 
+	 * - The name must be non-null and non-empty.
+	 * - The name pattern must be non-null.
+	 * 
 	 * @param name The partial or full name to be matched against
 	 * @param namePattern The name pattern (see above)
 	 */
