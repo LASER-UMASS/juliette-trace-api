@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2018, University of Massachusetts Amherst
+ * Copyright (c) 2006, 2018, 2021, University of Massachusetts Amherst
  * All Rights Reserved.
  */
 package laser.juliette.trace;
@@ -14,8 +14,14 @@ import java.util.List;
  * trace. <code>Event</code> is an abstract base class for all
  * possible events.
  */
-public abstract class Event implements Serializable {
+public abstract class Event implements Serializable 
+{
     /**
+	 * Automatically generated serial version UID
+	 */
+	private static final long serialVersionUID = 8197613614428186514L;
+	
+	/**
      * If an event cannot be attributed to a particular agent,
      * it it should be attributed to the unknown agent.
      */
@@ -122,8 +128,15 @@ public abstract class Event implements Serializable {
      * Event annotations are stored as kind, value pairs. This class
      * represent that pair.
      */
-    public static class Annotation {
-    	Annotation(String kind, String value) {
+    public static class Annotation implements Serializable 
+    {	
+    	/**
+		 * Automatically generated serial version UID
+		 */
+		private static final long serialVersionUID = 794252920376889967L;
+		
+		
+		Annotation(String kind, String value) {
     		this.kind = kind;
     		this.value = value;
     	}

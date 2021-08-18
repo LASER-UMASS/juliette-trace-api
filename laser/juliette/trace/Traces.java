@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, University of Massachusetts Amherst
+ * Copyright (c) 2009, 2021, University of Massachusetts Amherst
  * All Rights Reserved.
  */
 package laser.juliette.trace;
@@ -13,5 +13,11 @@ import java.util.ArrayList;
  * 
  * @see java.util.List
  */
-public class Traces extends ArrayList<Trace> {
+public class Traces extends ArrayList<Trace> 
+{
+	/**
+	 * Automatically generated serial version UID
+	 */
+	private static final long serialVersionUID = 186955795011958338L;
+	
 }

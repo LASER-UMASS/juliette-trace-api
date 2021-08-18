@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2020, University of Massachusetts Amherst
+ * Copyright (c) 2006, 2020, 2021, University of Massachusetts Amherst
  * All Rights Reserved.
  */
 package laser.juliette.trace;
@@ -21,8 +21,15 @@ import java.util.Set;
  * 
  * Traces are <code>java.lang.Iterable</code>
  */
-public class Trace implements Iterable<Event>, Serializable {
+public class Trace implements Iterable<Event>, Serializable 
+{
     /**
+	 * Automatically generated serial version UID 
+	 */
+	private static final long serialVersionUID = -7708595709593779575L;
+
+	
+	/**
      * Iterate over this trace in the order the events were added.
      * 
      * To avoid the possibility of concurrent modification, this operation
